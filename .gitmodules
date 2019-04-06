@@ -53,3 +53,27 @@
 [submodule "vim/vim/bundle/onedark"]
 	path = vim/vim/bundle/onedark
 	url = https://github.com/joshdick/onedark.vim.git
+[submodule "vim/vim/pack/git-plugins/start/vim-ale"]
+	path = vim/vim/pack/git-plugins/start/vim-ale
+	url = git@github.com:w0rp/ale.git
+[submodule "vim/vim/pack/git-plugins/start/vim-lilypond"]
+	path = vim/vim/pack/git-plugins/start/vim-lilypond
+	url = git@github.com:lfairy/lilyvim.git
+[submodule "vim/vim/pack/git-plugins/start/vim-table-mode"]
+	path = vim/vim/pack/git-plugins/start/vim-table-mode
+	url = git@github.com:dhruvasagar/vim-table-mode.git
+[submodule "vim/vim/pack/git-plugins/start/jedi-vim"]
+	path = vim/vim/pack/git-plugins/start/jedi-vim
+	url = git@github.com:davidhalter/jedi-vim.git
+[submodule "vim/vim/pack/git-plugins/start/vim-polyglot"]
+	path = vim/vim/pack/git-plugins/start/vim-polyglot
+	url = git@github.com:sheerun/vim-polyglot.git
+[submodule "vim/vim/pack/git-plugins/start/vim-javacomplete2"]
+	path = vim/vim/pack/git-plugins/start/vim-javacomplete2
+	url = https://github.com/artur-shaik/vim-javacomplete2.git
+[submodule "vim/vim/pack/git-plugins/start/ctrlp.vim"]
+	path = vim/vim/pack/git-plugins/start/ctrlp.vim
+	url = git@github.com:kien/ctrlp.vim.git
+[submodule "vim/vim/pack/git-plugins/start/vim-latex"]
+	path = vim/vim/pack/git-plugins/start/vim-latex
+	url = git@github.com:quitejonny/vim-latex.git

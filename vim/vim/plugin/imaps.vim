@@ -152,7 +152,7 @@ endif
 "   a:rhs are replaced with the users setting of
 "   [bg]:Imap_PlaceHolderStart and [bg]:Imap_PlaceHolderEnd settings.
 "
-function! IMAP(lhs, rhs, ft, ...)
+function! WIMAP(lhs, rhs, ft, ...)
 
 	" Find the place holders to save for IMAP_PutTextWithMovement() .
 	if a:0 < 2
@@ -281,6 +281,16 @@ function! s:LookupCharacter(char)
 	if strlen(lhs) == 0
 		return a:char
 	endif
+
+	" needed for wiki makro
+	let a:t = matchstr(strpart(getline("."), 0, col(".")-1) . a:char, '\$*%\ze' . lhs . '$')
+	if strlen(a:t) != 0
+		let a:quote = substitute(a:t, '%$', '', '')
+		let a:quote = substitute(a:quote, '\$', '\\\\', 'g')
+		let rhs = substitute(rhs, '\(<++>\)\?$', a:t . '\1', '')
+		let rhs = substitute(rhs, '"', a:quote . '"', 'g')
+	endif
+
 	" enough back-spaces to erase the left-hand side; -1 for the last
 	" character typed:
 	let bs = substitute(s:MultiByteStrpart(lhs, 1), ".", "\<bs>", "g")
@@ -853,4 +863,3 @@ com! -nargs=0 -range Snip :<line1>,<line2>call <SID>Snip()
 let &cpo = s:save_cpo
 
 " vim:ft=vim:ts=4:sw=4:noet:fdm=marker:commentstring=\"\ %s:nowrap
-

@@ -49,7 +49,7 @@ syntax match twikiOrderedList  "^\(   \)\+1\ze "
 
 syntax match twikiVariableParam contained "[a-z0-9]*="
 syntax match twikiVariableNoPar "\([^!]\|^\)%\w\+%"
-"syntax match twikiTag      "<\w\+>"
+syntax match twikiTag      "<\w\+>"
 
 function! s:AddTwikiVariable(num)
     let a:firstdollar = a:num == 1 ? '' : '\$'
@@ -63,7 +63,7 @@ function! s:AddTwikiVariable(num)
         \ . ' contains=twikiVariableParam,twikiVarVal,twikiSimpleVar,twikiVariable'
         \ . ' containedin=htmlTag'
     " set twikiSimpleVar
-    exec 'syntax match twikiSimpleVar "[!$]\@<!' . a:macro . '\(\w\+:\)\?[A-Za-z]\+' . a:macro . '"'
+    exec 'syntax match twikiSimpleVar "[!$]\@<!' . a:macro . '\(\w\+:\)\?\w\+' . a:macro . '"'
         \ . ' containedin=htmlTag'
     " set twikiVarVal
     let a:n = a:num - 1
@@ -170,4 +170,3 @@ endif
 let b:current_syntax = "twiki"
 
 " vim:fdm=marker
-

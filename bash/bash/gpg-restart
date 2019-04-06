@@ -1,0 +1,7 @@
+gpg-restart() {
+    # OpenPGP applet support for YubiKey NEO
+    if [ "$(pidof gpg-agent)" ]; then
+        killall gpg-agent > /dev/null
+    fi
+    eval $(gpg-agent --daemon --enable-ssh-support --sh)
+}

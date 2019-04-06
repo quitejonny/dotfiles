@@ -1,10 +1,7 @@
-runtime! ftplugin/twiki.vim
-runtime! plugin/imapaas.vim
-
 " setlocal foldmethod=indent
 " no automatic linebreak when textwidth is reached
 setlocal formatoptions-=t
-setlocal textwidth=80
+setlocal textwidth=100
 setlocal colorcolumn=+1
 highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 
@@ -46,9 +43,8 @@ endfunction
 
 setlocal indentexpr=WikiIndent()
 
-call IMAP('if!', "%IF{\<CR>\<c-t>\"<+cond+>\"\<CR>then=\"<+then+>\"<++> else=\"<+else+>\"\<CR>\<c-d>}%<++>", 'wiki')
-call IMAP('search!', "SEARCH{\<CR>\<c-t>\"<++>\"\<CR>type=\"<++>\"\<CR>limit=\"<++>\"\<CR>nonoise=\"<++>\"\<CR>format=\"<++>\"\<CR>\<c-d>}<++>", 'wiki')
-call IMAP("PREF!", "%META:PREFERENCE{name=\"<++>\" title=\"<++>\" type=\"<++>\" value=\"<++>\"}%", "wiki")
+call WIMAP('if`', "IF{\<CR>\"<+cond+>\"\<CR>then=\"<+then+>\"<++> else=\"<+else+>\"\<CR>\<c-d>}<++>", 'wiki')
+call WIMAP('search`', "SEARCH{\<CR>\"<++>\"\<CR>type=\"<++>\"\<CR>limit=\"<++>\"\<CR>nonoise=\"<++>\"\<CR>format=\"<++>\"\<CR>\<c-d>}<++>", 'wiki')
 
 nnoremap <F5> ms:%call WikiExpand(1)<CR>`s
 nnoremap <s-F5> ms:%call WikiExpand(0)<CR>`s
@@ -56,4 +52,3 @@ vnoremap <silent> <F5> :call WikiExpand(1)<CR>
 vnoremap <silent> <s-F5> :call WikiExpand(0)<CR>
 vnoremap <F6> :call EscapeExpression(1)<CR>
 vnoremap <s-F6> :call EscapeExpression(0)<CR>
-

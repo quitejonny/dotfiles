@@ -1,5 +1,4 @@
 test-foswiki() {
-    IS_INTEGRATION=false
     IS_VERBOSE=false
     IS_DOCKER_IMAGE_PULLED=true
     CLEAR="clear"
@@ -8,25 +7,73 @@ test-foswiki() {
     usage() {
         printf -v text "%s" \
             "test-fosiki [OPTION...]\n" \
-            "    -i, --integration-test     run integrational tests\n" \
             "    -c, --no-clear     does not clear shell before tests are run\n" \
             "    -p, --no-pull      does not pull docker image\n" \
             "    -v, --verbose      shows failed tests only\n" \
-            "    -w, --watch        watches backend tests\n"
+            "    -w, --watch        watches backend tests\n" \
+            "        --create       creates a new folder and testrunner in \$repo\n"
         printf "$text"
         exit
     }
 
-    OPTS=`getopt -o cpvwh --long integration-test,no-clear,no-pull,verbose,watch,help -- "$@"`
+    create_infrastructure() {
+        TEST_DIR=backend-tests
+        SPEC_DIR=$TEST_DIR/Spec
+        mkdir -p $SPEC_DIR
+
+        cat > $TEST_DIR/test.pl << EOL
+package Test;
+
+use strict;
+use warnings;
+
+use File::Basename;
+use Cwd qw( getcwd abs_path );
+
+use utf8;
+use Test::Spec;
+use Jasmine::Spy;
+
+
+sub getSpecs {
+    my (\$pattern) = @_;
+
+    my \$cwd = getcwd();
+    chdir dirname(__FILE__);
+    my @specs = map { abs_path(\$_) } glob(\$pattern);
+    chdir \$cwd;
+
+    return @specs;
+}
+
+my @specs = getSpecs("Spec/**Spec.pm Spec/**Spec.pl");
+
+for my \$spec (@specs) {
+    print("\$spec\n");
+    spec_helper \$spec;
+}
+
+runtests unless caller;
+EOL
+
+        cat > $SPEC_DIR/ExampleSpec.pm << EOL
+describe "the example spec" => sub {
+    it "verifies the calculation" => sub {
+        is(5+5, 10);
+    };
+};
+EOL
+
+        exit
+    }
+
+    OPTS=`getopt -o cpvwh --long no-clear,no-pull,verbose,watch,create,help -- "$@"`
     if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 
     eval set -- "$OPTS"
 
     while true; do
         case "$1" in
-            -i | --integration-test )
-                IS_INTEGRATION=true
-                shift ;;
             -c | --no-clear )
                 CLEAR=""
                 shift ;;
@@ -39,6 +86,9 @@ test-foswiki() {
             -v | --verbose )
                 IS_VERBOSE=true
                 shift ;;
+            --create )
+                create_infrastructure;
+                shift;;
             -h | --help )
                 usage
                 shift ;;
@@ -53,9 +103,6 @@ test-foswiki() {
     WATCH_PATH=`pwd`
     FILE_WATCHES=`find $WATCH_PATH -name '*.pm' -o -name '*.pl' -o -name '*.po'`
 
-    sigint_handler() {
-        exit
-    }
 
     current_time() {
         echo $(($(date +%s%N)/1000000))
@@ -160,20 +207,14 @@ test-foswiki() {
 
     run_tests() {
         $CLEAR
-        if true; then
-            ./db-test.sh \
-                | filter_output
-        else
-            docker run -it --rm \
-                -v "$PWD":/usr/working \
-                -w /usr/working $DOCKER_IMAGE \
-                perl backend-tests/test.pl \
-                | filter_output
-        fi
+        docker run -it --rm \
+            -v "$PWD":/usr/working \
+            -w /usr/working $DOCKER_IMAGE \
+            perl backend-tests/test.pl \
+            | filter_output
+
 
     }
-
-    trap sigint_handler SIGINT
 
     if $IS_DOCKER_IMAGE_PULLED; then
         docker pull $DOCKER_IMAGE
@@ -189,3 +230,4 @@ test-foswiki() {
         run_tests
     fi
 }
+

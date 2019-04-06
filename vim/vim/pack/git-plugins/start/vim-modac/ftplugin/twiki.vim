@@ -116,4 +116,3 @@ if exists("g:Twiki_Mapings") &&
 endif
 " Autoconfigure vim indentation settings
 " vim:fdm=marker
-

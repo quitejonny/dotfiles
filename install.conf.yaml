@@ -16,8 +16,6 @@
             "~/.bashrc": "bash/bashrc",
             "~/.dotfiles": "",
             "~/.dotfiles/.gitignore": "git/gitignore",
-            "~/.hyper.js": "hyper/hyper.js",
-            "~/.inputrc": "bash/inputrc",
             "~/.profile": "bash/profile",
             "~/.vim": "vim/vim",
             "~/.vimrc": "vim/vimrc",

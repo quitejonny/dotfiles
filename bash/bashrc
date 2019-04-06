@@ -74,6 +74,10 @@ if [ -f ~/.bash_completion ]; then
     . ~/.bash_completion
 fi
 
+for f in $(find ~/.bash/ -maxdepth 1 -type f); do
+    source $f
+done
+
 function parse_git_branch () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }

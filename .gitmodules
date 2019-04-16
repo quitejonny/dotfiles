@@ -83,3 +83,9 @@
 [submodule "vim/vim/pack/git-plugins/start/vim-ack"]
 	path = vim/vim/pack/git-plugins/start/vim-ack
 	url = https://github.com/mileszs/ack.vim.git
+[submodule "vim/vim/pack/git-plugins/start/vim-fugitive"]
+	path = vim/vim/pack/git-plugins/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "texmf/tex/latex/modac"]
+	path = texmf/tex/latex/modac
+	url = git@github.com:modell-aachen/latex-modac.git

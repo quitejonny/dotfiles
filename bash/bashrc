@@ -107,3 +107,5 @@ if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
   --color info:108,prompt:109,spinner:108,pointer:168,marker:168
   '
 fi
+
+export RMS_REPO=~/repos/RMS

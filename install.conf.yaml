@@ -18,6 +18,7 @@
             "~/.profile": "bash/profile",
             "~/.vim": "vim/vim",
             "~/.vimrc": "vim/vimrc",
+            "~/texmf": "texmf",
         }
     },
     {

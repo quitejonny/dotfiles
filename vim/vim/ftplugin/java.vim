@@ -1,5 +1,5 @@
 setlocal omnifunc=javacomplete#Complete
-setlocal sw=2 ts=2 expandtab autoindent
+setlocal sw=4 ts=4 expandtab autoindent
 setlocal textwidth=100
 setlocal colorcolumn=+1
 

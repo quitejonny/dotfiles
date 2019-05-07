@@ -89,3 +89,9 @@
 [submodule "texmf/tex/latex/modac"]
 	path = texmf/tex/latex/modac
 	url = git@github.com:modell-aachen/latex-modac.git
+[submodule "pandoc"]
+	path = pandoc
+	url = git@github.com:modell-aachen/dotfiles-pandoc.git
+[submodule "revealjs-modac"]
+	path = revealjs-modac
+	url = git@github.com:modell-aachen/revealjs-modac.git

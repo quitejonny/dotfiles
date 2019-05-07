@@ -19,6 +19,8 @@
             "~/.vim": "vim/vim",
             "~/.vimrc": "vim/vimrc",
             "~/texmf": "texmf",
+            "~/.pandoc": "pandoc",
+            "~/.local/bin/reveal.js": "revealjs-modac/bin/reveal.js"
         }
     },
     {

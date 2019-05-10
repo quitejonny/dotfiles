@@ -13,7 +13,6 @@ test-foswiki() {
             "    -w, --watch        watches backend tests\n" \
             "        --create       creates a new folder and testrunner in \$repo\n"
         printf "$text"
-        exit
     }
 
     create_infrastructure() {
@@ -91,6 +90,7 @@ EOL
                 shift;;
             -h | --help )
                 usage
+                return
                 shift ;;
             -- )
                 shift

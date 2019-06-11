@@ -3,7 +3,6 @@ setlocal spell
 setlocal spelllang=de
 setlocal tabstop=4
 setlocal shiftwidth=4
-setlocal textwidth=100
 setlocal autoindent
 setlocal expandtab
 setlocal formatoptions-=t

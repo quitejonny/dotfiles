@@ -87,20 +87,18 @@ set list lcs=trail:·,tab:»·
 set modeline
 
 let g:ale_completion_enabled = 0
-let g:ale_linters = {'javascript': ['eslint'], 'vue': ['eslint']}
-let g:ale_fixers = {'javascript': ['eslint'], 'vue': ['eslint']}
+let g:ale_linters = {
+  \ 'javascript': ['eslint'],
+  \ 'vue': ['eslint'],
+  \ 'typescript': ['eslint'],
+  \ 'perl': ['perlcritic'],
+  \ }
+let g:ale_fixers = {'javascript': ['eslint'], 'vue': ['eslint'], 'typescript': ['eslint']}
 let g:ale_fix_on_save = 1
 let g:ale_java_javac_classpath="/usr/share/java/*:."
 
-
-" Put these lines at the very end of your vimrc file.
-
-" Load all plugins now.
-" Plugins need to be added to runtimepath before helptags can be generated.
-packloadall
-" Load all of the helptags now, after plugins have been loaded.
-" All messages and errors will be ignored.
-silent! helptags ALL
+" let g:ale_perl_perl_options = '-c -Mwarnings -Ilib -It/lib'
+let g:ale_perl_perlcritic_showrules = 1
 
 set rtp+=~/.fzf
 
@@ -117,3 +115,21 @@ highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 
 " for node.js fs.watch
 set backupcopy=yes
+
+" configure spell
+" highlight clear SpellBad
+" highlight SpellBad cterm=underline ctermfg=Red
+" highlight SpellBad gui=undercurl guifg=Red
+
+autocmd BufNewFile,BufRead *.md   set syntax=markdown
+
+nmap <leader>a :Ack! "\b<cword>\b" <CR>
+
+" Put these lines at the very end of your vimrc file.
+
+" Load all plugins now.
+" Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL

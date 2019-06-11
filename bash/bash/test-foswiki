@@ -3,11 +3,13 @@ test-foswiki() {
     IS_DOCKER_IMAGE_PULLED=true
     CLEAR="clear"
     IS_WATCHED=false
+    DOCKER_IMAGE="quay.io/modellaachen/perl-test:latest"
 
     usage() {
         printf -v text "%s" \
             "test-fosiki [OPTION...]\n" \
             "    -c, --no-clear     does not clear shell before tests are run\n" \
+            "    -i, --image        use a different docker image\n" \
             "    -p, --no-pull      does not pull docker image\n" \
             "    -v, --verbose      shows failed tests only\n" \
             "    -w, --watch        watches backend tests\n" \
@@ -66,7 +68,7 @@ EOL
         exit
     }
 
-    OPTS=`getopt -o cpvwh --long no-clear,no-pull,verbose,watch,create,help -- "$@"`
+    OPTS=`getopt -o ci:pvwh --long no-clear,image:,no-pull,verbose,watch,create,help -- "$@"`
     if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 
     eval set -- "$OPTS"
@@ -76,6 +78,9 @@ EOL
             -c | --no-clear )
                 CLEAR=""
                 shift ;;
+            -i | --image )
+                DOCKER_IMAGE=$2
+                shift 2 ;;
             -p | --no-pull )
                 IS_DOCKER_IMAGE_PULLED=false
                 shift ;;
@@ -202,8 +207,6 @@ EOL
         printf "Time:     %d.%03ds\n" "$ELAPSED_SECONDS" "$ELAPSED_MILLISECONDS"
         printf "\e[2;37mRan all tests.\e[0m\n\n"
     }
-
-    DOCKER_IMAGE="quay.io/modellaachen/perl-test:latest"
 
     run_tests() {
         $CLEAR

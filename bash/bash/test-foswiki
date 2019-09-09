@@ -105,9 +105,6 @@ EOL
         esac
     done
 
-    WATCH_PATH=`pwd`
-    FILE_WATCHES=`find $WATCH_PATH -name '*.pm' -o -name '*.pl' -o -name '*.po'`
-
 
     current_time() {
         echo $(($(date +%s%N)/1000000))
@@ -223,14 +220,16 @@ EOL
         docker pull $DOCKER_IMAGE
     fi
 
+    WATCH_PATH=`pwd`
+    TEMP_FILE=`mktemp --suffix -qwiki-watcher`
+
     if $IS_WATCHED; then
         while true; do
             run_tests
-            FILE_WATCHES=`find $WATCH_PATH -name '*.pm' -o -name '*.pl' -o -name '*.po'`
-            inotifywait -e CLOSE_WRITE $FILE_WATCHES
+            find $WATCH_PATH -name '*.pm' -o -name '*.pl' -o -name '*.po' > $TEMP_FILE
+            inotifywait -e CLOSE_WRITE --fromfile $TEMP_FILE
         done
     else
         run_tests
     fi
 }
-

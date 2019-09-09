@@ -52,23 +52,23 @@ syntax match twikiVariableNoPar "\([^!]\|^\)%\w\+%"
 syntax match twikiTag      "<\w\+>"
 
 function! s:AddTwikiVariable(num)
-    let a:firstdollar = a:num == 1 ? '' : '\$'
-    let a:count = a:num == 1 ? 0 : a:num - 2
-    let a:expand = a:num == 1 ? "" : '\|\(dollar\)\{' . a:count . '}perce\?nt'
+    let firstdollar = a:num == 1 ? '' : '\$'
+    let num_count = a:num == 1 ? 0 : a:num - 2
+    let expand = a:num == 1 ? "" : '\|\(dollar\)\{' . num_count . '}perce\?nt'
 
-    let a:macro = a:firstdollar . '\(\$\{' . a:count . '}%' . a:expand . '\)'
-    let a:start = '[!$]\@<!' . a:macro . '\(\w\+:\)\?\w\+{'
-    let a:end =  '}' . a:macro
-    exec 'syntax region twikiVariable start="' . a:start . '" end="' . a:end . '"'
+    let macro = firstdollar . '\(\$\{' . num_count . '}%' . expand . '\)'
+    let start = '[!$]\@<!' . macro . '\(\w\+:\)\?\w\+{'
+    let end =  '}' . macro
+    exec 'syntax region twikiVariable start="' . start . '" end="' . end . '"'
         \ . ' contains=twikiVariableParam,twikiVarVal,twikiSimpleVar,twikiVariable'
         \ . ' containedin=htmlTag'
     " set twikiSimpleVar
-    exec 'syntax match twikiSimpleVar "[!$]\@<!' . a:macro . '\(\w\+:\)\?\w\+' . a:macro . '"'
+    exec 'syntax match twikiSimpleVar "[!$]\@<!' . macro . '\(\w\+:\)\?\w\+' . macro . '"'
         \ . ' containedin=htmlTag'
     " set twikiVarVal
-    let a:n = a:num - 1
-    exec 'syntax region twikiVarVal start="\\\{' . a:n . '}\""'
-        \ .' skip="\\\{' . a:num . ',}\"" end="\\\{' . a:n . '}\""'
+    let n = a:num - 1
+    exec 'syntax region twikiVarVal start="\\\{' . n . '}\""'
+        \ .' skip="\\\{' . a:num . ',}\"" end="\\\{' . n . '}\""'
         \ .' contains=twikiSimpleVar,twikiVariable'
 endfunction
 

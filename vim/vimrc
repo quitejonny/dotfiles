@@ -121,7 +121,8 @@ set backupcopy=yes
 " highlight SpellBad cterm=underline ctermfg=Red
 " highlight SpellBad gui=undercurl guifg=Red
 
-autocmd BufNewFile,BufRead *.md   set syntax=markdown
+autocmd BufNewFile,BufRead *.txt   set filetype=wiki
+autocmd BufNewFile,BufRead *.md   set filetype=markdown
 
 nmap <leader>a :Ack! "\b<cword>\b" <CR>
 

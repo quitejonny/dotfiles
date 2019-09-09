@@ -17,7 +17,7 @@ let g:table_mode_header_fillchar='='
 call IMAP('`=>', '⇒<++>', 'markdown')
 call IMAP('`->', '→<++>', 'markdown')
 
-nmap <silent> <Leader>ll :! cd %:p:h && pandoc %:p -o /tmp/%:t:r.pdf&<CR><CR>
+nmap <silent> <Leader>ll :! cd %:p:h && pandoc --filter pandoc-citeproc %:p -o /tmp/%:t:r.pdf&<CR><CR>
 nmap <Leader>ln :! cd %:p:h && pandoc %:p -V documentclass=modac -o /tmp/%:t:r.pdf<CR>
 nmap <Leader>lp :call Markdown_Run_revealjs()<CR><CR>
 nmap <Leader>l[ :call ToggleMarkdownReload()<CR><CR>

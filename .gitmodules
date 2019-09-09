@@ -95,3 +95,6 @@
 [submodule "revealjs-modac"]
 	path = revealjs-modac
 	url = git@github.com:modell-aachen/revealjs-modac.git
+[submodule "vim/vim/pack/git-plugins/start/vim-go"]
+	path = vim/vim/pack/git-plugins/start/vim-go
+	url = https://github.com/fatih/vim-go.git

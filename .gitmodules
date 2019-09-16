@@ -98,3 +98,6 @@
 [submodule "vim/vim/pack/git-plugins/start/vim-go"]
 	path = vim/vim/pack/git-plugins/start/vim-go
 	url = https://github.com/fatih/vim-go.git
+[submodule "bash/modac-bash"]
+	path = bash/modac-bash
+	url = git@github.com:modell-aachen/modac-bash.git

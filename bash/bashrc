@@ -115,3 +115,4 @@ fi
 export RMS_REPO=~/repos/RMS
 export REPOS_DIRECTORY=$HOME/repos
 export PROVISIONER_DIRECTORY=$HOME/develop/devops-machine-provisioner
+export $(egrep -v '^#' .env | xargs)

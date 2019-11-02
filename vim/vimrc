@@ -100,7 +100,11 @@ let g:ale_java_javac_classpath="/usr/share/java/*:."
 " let g:ale_perl_perl_options = '-c -Mwarnings -Ilib -It/lib'
 let g:ale_perl_perlcritic_showrules = 1
 
-set rtp+=~/.fzf
+if filereadable("/usr/share/doc/fzf/examples/fzf.vim")
+  source /usr/share/doc/fzf/examples/fzf.vim
+else
+  set rtp+=~/.fzf
+endif
 
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'

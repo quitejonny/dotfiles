@@ -78,9 +78,7 @@ for f in $(find ~/.bash/ -maxdepth 1 -type f); do
     source $f
 done
 
-for f in $(find ~/.modac-bash/ -maxdepth 1 -type f -name '*.sh'); do
-    source $f
-done
+[ -f $HOME/.modac-bash/bashrc.sh ] && source $HOME/.modac-bash/bashrc.sh
 
 function parse_git_branch () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -113,5 +111,5 @@ if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
   '
 fi
 
-export RMS_REPO=~/repos/RMS
-[ -f .env ] && export $(egrep -v '^#' .env | xargs)
+export RMS_REPO=$HOME/repos/RMS
+[ -f .env ] && source $HOME/.env

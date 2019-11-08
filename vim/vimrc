@@ -14,18 +14,6 @@ endif
 
 set guioptions-=T
 set guioptions-=r
-"
-" Open multiple tabs at once
-fun! OpenMultipleTabs(pattern_list)
-    for p in a:pattern_list
-        for c in glob(l:p, 0, 1)
-            execute 'tabedit ' . l:c
-        endfor
-    endfor
-endfun
-
-command! -bar -bang -nargs=+ -complete=file Tabedit call OpenMultipleTabs([<f-args>])
-
 
 " Store swp/backup file in one place
 if !isdirectory($HOME."/.vim/backup")
@@ -70,15 +58,6 @@ fun! ToggleUmlauts()
 endfun
 
 
-function! Fac(n)
-  if a:n <= 1
-    return 1
-  else
-    return a:n * Fac(a:n - 1)
-  endif
-endfunction
-
-
 autocmd FileType vue syntax sync fromstart
 " let g:vue_disable_pre_processors=1
 
@@ -88,11 +67,19 @@ let g:syntastic_cpp_compiler_options = ' -std=c++17'
 set list lcs=trail:·,tab:»·
 set modeline
 
+" Enable completion where available.
+" This setting must be set before ALE is loaded.
+"
+" You should not turn this setting on if you wish to use ALE as a completion
+" source for other completion plugins, like Deoplete.
 let g:ale_completion_enabled = 0
+set omnifunc=ale#completion#OmniFunc
+let g:ale_completion_tsserver_autoimport = 1
+
 let g:ale_linters = {
-  \ 'javascript': ['eslint'],
-  \ 'vue': ['eslint'],
-  \ 'typescript': ['eslint'],
+  \ 'javascript': ['eslint', 'tsserver'],
+  \ 'vue': ['eslint', 'vls'],
+  \ 'typescript': ['eslint', 'tsserver'],
   \ 'perl': ['perlcritic'],
   \ }
 let g:ale_fixers = {'javascript': ['eslint'], 'vue': ['eslint'], 'typescript': ['eslint']}

@@ -92,13 +92,15 @@ NO_COLOR="\[\033[0m\]"
 
 export PS1="\${debian_chroot:+(\$debian_chroot)}$GREEN\u@\h$NO_COLOR:$BLUE\w$NO_COLOR$YELLOW\$(parse_git_branch)$RED\$git_dirty$NO_COLOR\$ "
 
-export PATH=$PATH:$(yarn global bin)
+export PATH=$PATH:$(yarn global bin):$HOME/go/bin
 export VAGRANT_DEFAULT_PROVIDER=lxd
 
 export N_PREFIX=$HOME/.local
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && source /usr/share/doc/fzf/examples/key-bindings.bash
+_googleCloudSdkPath=/snap/google-cloud-sdk/current/completion.bash.inc
+[ -f "$_googleCloudSdkPath" ] source "$_googleCloudSdkPath"
 
 # fzf + ag configuration
 if hash fzf 2>/dev/null && hash ag 2>/dev/null; then

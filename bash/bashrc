@@ -92,7 +92,7 @@ NO_COLOR="\[\033[0m\]"
 
 export PS1="\${debian_chroot:+(\$debian_chroot)}$GREEN\u@\h$NO_COLOR:$BLUE\w$NO_COLOR$YELLOW\$(parse_git_branch)$RED\$git_dirty$NO_COLOR\$ "
 
-export PATH=$PATH:$(yarn global bin)
+export PATH=$PATH:$HOME/go/bin
 export VAGRANT_DEFAULT_PROVIDER=lxd
 
 export N_PREFIX=$HOME/.local
@@ -112,4 +112,18 @@ if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
 fi
 
 export RMS_REPO=$HOME/repos/RMS
-[ -f .env ] && source $HOME/.env
+[ -f $HOME/.env ] && source $HOME/.env
+
+source <(kubectl completion bash)
+
+alias mix="docker-compose run --rm phoenix mix"
+
+export PERL5LIB=$HOME/perl5/lib/perl5
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+source /home/roos/.bash_completions/qaffold.sh
+
+source /home/roos/.bash_completions/qenv.sh

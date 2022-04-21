@@ -9,7 +9,6 @@ set rnu
 if has('gui_running')
   set guifont=Ubuntu\ Mono\ 12
   set grepprg=grep\ -nH\ $*
-  filetype indent on
 endif
 
 set guioptions-=T
@@ -91,11 +90,18 @@ set modeline
 let g:ale_completion_enabled = 0
 let g:ale_linters = {
   \ 'javascript': ['eslint'],
-  \ 'vue': ['eslint'],
-  \ 'typescript': ['eslint'],
   \ 'perl': ['perlcritic'],
+  \ 'scss': ['prettier'],
+  \ 'typescript': ['eslint'],
+  \ 'vue': ['eslint' ],
   \ }
-let g:ale_fixers = {'javascript': ['eslint'], 'vue': ['eslint'], 'typescript': ['eslint']}
+let g:ale_fixers = {
+  \ 'javascript': ['eslint'],
+  \ 'perl': ['perltidy'],
+  \ 'scss': ['prettier'],
+  \ 'typescript': ['eslint'],
+  \ 'vue': ['eslint'],
+  \ }
 let g:ale_fix_on_save = 1
 let g:ale_java_javac_classpath="/usr/share/java/*:."
 
@@ -128,7 +134,7 @@ set backupcopy=yes
 " highlight SpellBad gui=undercurl guifg=Red
 
 autocmd BufNewFile,BufRead *.txt   set filetype=wiki
-autocmd BufNewFile,BufRead *.md   set filetype=markdown
+autocmd BufNewFile,BufRead *.md    set filetype=markdown
 
 nmap <leader>a :Ack! "\b<cword>\b" <CR>
 
@@ -139,4 +145,5 @@ nmap <leader>a :Ack! "\b<cword>\b" <CR>
 packloadall
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
+autocmd BufNewFile,BufRead *.tmpl  set filetype=wiki
 silent! helptags ALL

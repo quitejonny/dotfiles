@@ -43,8 +43,8 @@ endfunction
 
 setlocal indentexpr=WikiIndent()
 
-call WIMAP('if`', "IF{\<CR>\"<+cond+>\"\<CR>then=\"<+then+>\"<++> else=\"<+else+>\"\<CR>\<c-d>}<++>", 'wiki')
-call WIMAP('search`', "SEARCH{\<CR>\"<++>\"\<CR>type=\"<++>\"\<CR>limit=\"<++>\"\<CR>nonoise=\"<++>\"\<CR>format=\"<++>\"\<CR>\<c-d>}<++>", 'wiki')
+call IMAP('if`', "IF{\<CR>\"<+cond+>\"\<CR>then=\"<+then+>\"<++> else=\"<+else+>\"\<CR>\<c-d>}<++>", 'wiki')
+call IMAP('search`', "SEARCH{\<CR>\"<++>\"\<CR>type=\"<++>\"\<CR>limit=\"<++>\"\<CR>nonoise=\"<++>\"\<CR>format=\"<++>\"\<CR>\<c-d>}<++>", 'wiki')
 
 nnoremap <F5> ms:%call WikiExpand(1)<CR>`s
 nnoremap <s-F5> ms:%call WikiExpand(0)<CR>`s

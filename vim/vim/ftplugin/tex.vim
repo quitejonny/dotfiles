@@ -21,7 +21,7 @@ let g:Tex_SmartQuoteClose = "\"'"
 let g:Tex_DefaultTargetFormat = 'pdf'
 let g:Tex_MultipleCompileFormats='pdf, aux'
 let g:Tex_BibtexFlavor = 'biber'
-let g:Tex_CompileRule_pdf = 'pdflatex -interaction=nonstopmode $*'
+let g:Tex_CompileRule_pdf = 'pdflatex -interaction=nonstopmode -shell-escape $*'
 " let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
 
 " Start with plain TeX.  This will also define b:did_ftplugin .

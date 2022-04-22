@@ -1,32 +1,25 @@
-[
-    {
-        "defaults": {
-            "link": {
-                "relink": true
-            }
-        }
-    },
-    {
-        "clean": ["~"]
-    },
-    {
-        "link": {
-            "~/.bash": "bash/bash",
-            "~/.bash_aliases": "bash/bash_aliases",
-            "~/.bashrc": "bash/bashrc",
-            "~/.dotfiles": "",
-            "~/.profile": "bash/profile",
-            "~/.vim": "vim/vim",
-            "~/.vimrc": "vim/vimrc",
-            "~/.config/nvim": "nvim",
-            "~/texmf": "texmf",
-            "~/.pandoc": "pandoc",
-            "~/.local/bin/reveal.js": "revealjs-modac/bin/reveal.js"
-        }
-    },
-    {
-        "shell": [
-            ["git submodule update --init --recursive", "Installing submodules"]
-        ]
-    }
-]
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- link:
+    ~/.bash: bash/bash
+    ~/.bash_aliases: bash/bash_aliases
+    ~/.bashrc: bash/bashrc
+    ~/.dotfiles: ""
+    ~/.profile: bash/profile
+    ~/.vim: vim/vim
+    ~/.vimrc: vim/vimrc
+    ~/.config/nvim: nvim
+    ~/texmf: texmf
+    ~/.pandoc: pandoc
+    ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
+
+- create:
+    - ~/downloads
+    - ~/.vim/undo-history
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]

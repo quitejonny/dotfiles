@@ -129,3 +129,9 @@ export NVM_DIR="$HOME/.nvm"
 source /home/roos/.bash_completions/qaffold.sh
 
 source /home/roos/.bash_completions/qenv.sh
+
+alias qrestic-init="restic -r rclone:onedrive:backup init"
+alias qrestic-backup="restic -r rclone:onedrive:backup backup $HOME/Documents/ $HOME/Music/ $HOME/Pictures/"
+alias qeditor-set="sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60"
+alias firefox-backup="tar -C $HOME -jcvf $HOME/Documents/firefox-browser-profile.tar.bz2 $HOME/.mozilla"
+alias firefox-restore="rm -r $HOME/.mozilla && tar -xvf $HOME/Documents/firefox-browser-profile.tar.bz2 -C $HOME"

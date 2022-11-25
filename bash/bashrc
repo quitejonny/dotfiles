@@ -74,6 +74,12 @@ if [ -f ~/.bash_completion ]; then
     . ~/.bash_completion
 fi
 
+if [ -d ~/.bash_completions ]; then
+    for completion in $(find ~/.bash_completions/ -maxdepth 1 -type f); do
+        . $completion
+    done
+fi
+
 for f in $(find ~/.bash/ -maxdepth 1 -type f); do
     source $f
 done
@@ -116,8 +122,6 @@ fi
 export RMS_REPO=$HOME/repos/RMS
 [ -f $HOME/.env ] && source $HOME/.env
 
-source <(kubectl completion bash)
-
 alias mix="docker-compose run --rm phoenix mix"
 
 export PERL5LIB=$HOME/perl5/lib/perl5
@@ -125,13 +129,13 @@ export PERL5LIB=$HOME/perl5/lib/perl5
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-source /home/roos/.bash_completions/qaffold.sh
-
-source /home/roos/.bash_completions/qenv.sh
+export PATH=$PATH:$NVM_BIN
 
 alias qrestic-init="restic -r rclone:onedrive:backup init"
 alias qrestic-backup="restic -r rclone:onedrive:backup backup $HOME/Documents/ $HOME/Music/ $HOME/Pictures/"
 alias qeditor-set="sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60"
 alias firefox-backup="tar -C $HOME -jcvf $HOME/Documents/firefox-browser-profile.tar.bz2 $HOME/.mozilla"
 alias firefox-restore="rm -r $HOME/.mozilla && tar -xvf $HOME/Documents/firefox-browser-profile.tar.bz2 -C $HOME"
+export PATH="${HOME}/.krew/bin:$PATH"
+
+eval "$(gh completion -s bash)"

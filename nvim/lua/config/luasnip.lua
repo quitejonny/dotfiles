@@ -65,9 +65,13 @@ ls.add_snippets("perl", {
         t({ "", "};", "", "runtests unless caller;", "" }),
     }),
     s("use Data::Dumper", {
-        t({ "use Data::Dumper;", "print STDERR Dumper(" }),
+        t({
+            "use Data::Dumper;",
+            "use Qwiki::Utils::JSON qw( encodeJSON );",
+            "print STDERR encodeJSON({ Body => Dumper(",
+        }),
         i(1),
-        t({ ");" }),
+        t({ ") }) . \"\\n\";" }),
     }),
     s("use Moose", {
         t({ "use Moose;", "" }),
@@ -78,7 +82,7 @@ ls.add_snippets("perl", {
         t({
             "use Moose::Exporter;",
             "",
-            "Moose::Exporter->setup_import_methods( traits_aliases => [__PACKAGE__] );",
+            "Moose::Exporter->setup_import_methods( trait_aliases => [__PACKAGE__] );",
             "",
         }),
     }),

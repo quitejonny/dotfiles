@@ -11,8 +11,8 @@ local function general_on_attach(client, bufnr)
     local function map(mapping, command)
         buf_keymap(bufnr, 'n', mapping, command, opts)
     end
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     map('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -27,6 +27,7 @@ end
 
 require('lspconfig').tsserver.setup({
     init_options = require("nvim-lsp-ts-utils").init_options,
+    automatic_installation = true,
     on_attach = function(client, bufnr)
         general_on_attach(client, bufnr)
 
@@ -41,8 +42,6 @@ require('lspconfig').tsserver.setup({
         buf_keymap(bufnr, "n", "<leader>lrf", ":TSLspRenameFile<CR>", opts)
         buf_keymap(bufnr, "n", "<leader>lia", ":TSLspImportAll<CR>", opts)
     end,
-    flags = {
-        -- This will be the default in neovim 0.7+
-        debounce_text_changes = 150,
-    }
 })
+
+require('lspconfig').vuels.setup({})

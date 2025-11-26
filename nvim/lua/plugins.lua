@@ -18,11 +18,11 @@ return require('packer').startup(function()
         config = [[require('config.lspconfig')]]
     }
     use 'jose-elias-alvarez/nvim-lsp-ts-utils'
-    use({
-        "jose-elias-alvarez/null-ls.nvim",
-        config = [[require('config.null_ls')]],
-        requires = { "nvim-lua/plenary.nvim" }
-    })
+    -- use {
+    --     "jose-elias-alvarez/null-ls.nvim",
+    --     config = [[require('config.null_ls')]],
+    --     requires = { "nvim-lua/plenary.nvim" }
+    -- }
 
     use {
         'nvim-telescope/telescope.nvim',
@@ -32,5 +32,15 @@ return require('packer').startup(function()
     use {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make'
+    }
+    use {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        config = [[require('config.copilot')]],
+    }
+    use {
+        "stevearc/conform.nvim",
+        config = [[require('config.conform')]],
     }
 end)

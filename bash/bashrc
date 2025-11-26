@@ -84,8 +84,6 @@ for f in $(find ~/.bash/ -maxdepth 1 -type f); do
     source $f
 done
 
-[ -f $HOME/.modac-bash/bashrc.sh ] && source $HOME/.modac-bash/bashrc.sh
-
 function parse_git_branch () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
@@ -104,13 +102,13 @@ export VAGRANT_DEFAULT_PROVIDER=lxd
 export N_PREFIX=$HOME/.local
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && source /usr/share/doc/fzf/examples/key-bindings.bash
+[ -f $HOME/.fzf/key-bindings.bash ] && source $HOME/.fzf/key-bindings.bash
 _googleCloudSdkPath=/snap/google-cloud-sdk/current/completion.bash.inc
 [ -f "$_googleCloudSdkPath" ] && source "$_googleCloudSdkPath"
 
 # fzf + ag configuration
 if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
-  export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_DEFAULT_OPTS='
@@ -119,23 +117,15 @@ if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
   '
 fi
 
-export RMS_REPO=$HOME/repos/RMS
-[ -f $HOME/.env ] && source $HOME/.env
-
-alias mix="docker-compose run --rm phoenix mix"
-
-export PERL5LIB=$HOME/perl5/lib/perl5
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export PATH=$PATH:$NVM_BIN
-
-alias qrestic-init="restic -r rclone:onedrive:backup init"
-alias qrestic-backup="restic -r rclone:onedrive:backup backup $HOME/Documents/ $HOME/Music/ $HOME/Pictures/"
-alias qeditor-set="sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60"
-alias firefox-backup="tar -C $HOME -jcvf $HOME/Documents/firefox-browser-profile.tar.bz2 $HOME/snap/firefox"
-alias firefox-restore="tar -xvf $HOME/Documents/firefox-browser-profile.tar.bz2 -C $HOME"
-export PATH="${HOME}/.krew/bin:$PATH"
-
-eval "$(gh completion -s bash)"
+function install-ls () {
+  echo "Installing language servers (tsserver, vue, html, css, json)"
+  npm install --global \
+      eslint_d \
+      typescript-language-server \
+      typescript \
+      @vue/typescript-plugin \
+      volar
+      # vscode-langservers-extracted \
+      # @vue/language-server \
+}
+eval "$(devbox global shellenv --init-hook)"

@@ -31,3 +31,12 @@ alias wifialive='arping -I wlp4s0 10.10.10.1'
 alias createpr='gh pr create; gh pr merge --squash --auto'
 alias k='kubectl'
 complete -o default -F __start_kubectl k
+
+alias qrestic-init="restic -r rclone:onedrive:backup init"
+alias qrestic-backup="restic -r rclone:onedrive:backup backup $HOME/Documents/ $HOME/Music/ $HOME/Pictures/"
+alias qeditor-set="sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60"
+alias firefox-backup="tar -C $HOME -jcvf $HOME/Documents/firefox-browser-profile.tar.bz2 $HOME/snap/firefox"
+alias firefox-restore="tar -xvf $HOME/Documents/firefox-browser-profile.tar.bz2 -C $HOME"
+alias chrome-enable-schreenshare="echo 'chrome://flags/#enable-webrtc-pipewire-capturer'"
+alias ovpn-import-qwiki-config="nmcli connection import type openvpn file $HOME/Documents/vpn.modac.eu.ovpn"
+alias install-asdf="git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.0"

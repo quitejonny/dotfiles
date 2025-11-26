@@ -8,14 +8,17 @@
     ~/.bash: bash/bash
     ~/.bash_aliases: bash/bash_aliases
     ~/.bashrc: bash/bashrc
+    ~/.bash_profile: bash/bash_profile
+    ~/.config/nvim: nvim
     ~/.dotfiles: ""
+    ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
+    ~/.pandoc: pandoc
     ~/.profile: bash/profile
+    ~/.tmux.conf: tmux/tmux.conf
     ~/.vim: vim/vim
     ~/.vimrc: vim/vimrc
-    ~/.config/nvim: nvim
     ~/texmf: texmf
-    ~/.pandoc: pandoc
-    ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
+    ~/.config/alacritty: alacritty
 
 - create:
     - ~/downloads

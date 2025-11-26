@@ -4,6 +4,7 @@ local opt = vim.opt
 
 opt.relativenumber = true
 opt.undofile = true
+opt.writebackup = false
 opt.modeline = true
 opt.shiftwidth = 4
 opt.tabstop = 4

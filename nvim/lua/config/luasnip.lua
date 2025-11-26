@@ -46,6 +46,56 @@ vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
+local function current_elixir_module(_, _, user_arg1)
+    local path = vim.fn.expand('%')
+    path = string.gsub(path, "%.exs?$", "")
+    path = string.gsub(path, "^.*elixir/lib/", "")
+    path = string.gsub(path, "^.*elixir/test/", "")
+    path = string.gsub(path, "/(.)", function(s) return "." .. string.upper(s) end)
+    return path:gsub("_(.)", string.upper):gsub("^(.)", string.upper)
+end
+
+local function elixir_general_block(block, insertion, insertion_number)
+    return s(block, {
+        t({ block .. " " }), insertion(), t({ " do" }),
+        isn(insertion_number or 1, { t({ "", "" }), i(1) }, "$PARENT_INDENT  "),
+        t({ "", "end" }),
+    })
+end
+
+local function elixir_block(block)
+    return elixir_general_block(block, function() return i(1, "name") end, 2)
+end
+
+ls.add_snippets("elixir", {
+    elixir_general_block("defmodule", function() return f(current_elixir_module, {}) end),
+    elixir_general_block("test", function() return isn(1, { t({ "\"" }), i(1, "description"), t({ "\"" }) }, "") end, 2),
+    elixir_block("case"),
+    elixir_block("def"),
+    elixir_block("defp"),
+    elixir_block("pipeline"),
+    elixir_block("scope"),
+    s("paramtest", {
+        t({ "for { value, result } <- ["}),
+        isn(1, {
+            isn(3, {
+                isn(1, { t({ "", "{" }), i(1), t({ "}" }) }, "$PARENT_INDENT  "),
+                t({ "", "] do" }),
+            }, "$PARENT_INDENT  "),
+            t({ "", "test \"" }),
+            i(1),
+            t({ " #{value}\" do"}),
+            isn(2, { 
+                t({ "", "assert "}),
+                i(1),
+                t({ "(unquote(value)) == unquote(result)" }) 
+            }, "$PARENT_INDENT  "),
+            t({ "", "end" }),
+        }, "$PARENT_INDENT  "),
+        t({ "", "end" }),
+    }),
+})
+
 ls.add_snippets("perl", {
     s("package", {
         t( "package "),

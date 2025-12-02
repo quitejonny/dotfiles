@@ -1,15 +1,225 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-set -e
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-CONFIG="install.conf.yaml"
-DOTBOT_DIR="dotbot"
+print_help() {
+  cat <<EOF
+Usage: $(basename "$0") [OPTIONS] [CONFIG]
 
-DOTBOT_BIN="bin/dotbot"
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+Simple dotfiles manager using a YAML config and yq.
 
-cd "${BASEDIR}"
-git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
-git submodule update --init --recursive "${DOTBOT_DIR}"
+If CONFIG is not given, defaults to:
+  $DOTFILES_DIR/install.conf.yaml
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+Actions are determined from the YAML file and can include:
+  - clean:  remove dead symlinks under given paths
+  - link:   create symlinks from destinations to sources
+  - create: create directories
+  - shell:  run arbitrary shell commands in the dotfiles repo
+            (e.g. git submodule update)
+
+Options:
+  -h, --help          Show this help and exit
+  -n, --dry-run       Show what would be done, but do not change anything
+  -s, --shell         Also run commands from the 'shell:' section
+  -S, --shell-only    Run *only* 'shell:' commands (no clean/link/create)
+
+YAML structure (example):
+
+  - defaults:
+      link:
+        relink: true
+
+  - clean: ['~']
+
+  - link:
+      ~/.bash: bash/bash
+      ~/.bashrc: bash/bashrc
+      ~/.dotfiles: ""       # empty -> link to repo root
+
+  - create:
+      - ~/downloads
+      - ~/.vim/undo-history
+
+  - shell:
+      - [git submodule update --init --recursive, Installing submodules]
+
+Requires:
+  - bash
+  - yq v4 (https://github.com/mikefarah/yq)
+EOF
+}
+
+DRY_RUN=false
+RUN_SHELL=false
+SHELL_ONLY=false
+CONFIG_FILE=""
+
+#------------------------- Option parsing -------------------------#
+
+ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      print_help
+      exit 0
+      ;;
+    -n|--dry-run)
+      DRY_RUN=true
+      shift
+      ;;
+    -s|--shell)
+      RUN_SHELL=true
+      shift
+      ;;
+    -S|--shell-only)
+      RUN_SHELL=true
+      SHELL_ONLY=true
+      shift
+      ;;
+    --) # stop option parsing
+      shift
+      while [[ $# -gt 0 ]]; do
+        ARGS+=("$1")
+        shift
+      done
+      ;;
+    -*)
+      echo "Unknown option: $1" >&2
+      exit 1
+      ;;
+    *)
+      ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# CONFIG_FILE from remaining args, or default
+if [[ ${#ARGS[@]} -ge 1 ]]; then
+  CONFIG_FILE="${ARGS[0]}"
+else
+  CONFIG_FILE="$DOTFILES_DIR/install.conf.yaml"
+fi
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Config file not found: $CONFIG_FILE" >&2
+  exit 1
+fi
+
+#------------------------- Helpers -------------------------#
+
+expand_path() {
+  local p="$1"
+  eval "p=$p"   # expand ~
+  printf '%s\n' "$p"
+}
+
+do_cmd() {
+  if $DRY_RUN; then
+    echo "[DRY-RUN] $*"
+  else
+    "$@"
+  fi
+}
+
+link_entry() {
+  local target="$1"
+  local original_linkname="$2"
+  local relink="$3"
+
+  linkname="$(expand_path "$original_linkname")"
+
+  echo "Linking: $linkname"
+
+  do_cmd mkdir -p "$(dirname "$linkname")"
+
+  if [[ -z "$target" || "$target" == '""' ]]; then
+    target="$DOTFILES_DIR"
+  elif [[ "$target" != /* ]]; then
+    target="$DOTFILES_DIR/$target"
+  fi
+
+  if [[ "$relink" == "true" ]]; then
+    do_cmd ln -sfn "$target" "$linkname"
+  else
+    if [[ -e "$linkname" || -L "$linkname" ]]; then
+      echo "  Skipping existing: $linkname"
+      return
+    fi
+    do_cmd ln -sn "$target" "$linkname"
+  fi
+
+  echo "  -> $target"
+}
+
+create_dir() {
+  local d
+  d="$(expand_path "$1")"
+  echo "Creating directory: $d"
+  do_cmd mkdir -p "$d"
+}
+
+run_shell_cmd() {
+  local cmd="$1"
+  local desc="$2"
+  echo "$desc"
+  if $DRY_RUN; then
+    echo "[DRY-RUN] (cd \"$DOTFILES_DIR\" && $cmd)"
+  else
+    (cd "$DOTFILES_DIR" && eval "$cmd")
+  fi
+}
+
+#------------------------- Read config via yq -------------------------#
+
+# defaults.link.relink (bool, default false)
+RELINK_DEFAULT="$(
+  yq '.[].defaults.link.relink // false' "$CONFIG_FILE" 2>/dev/null \
+  | tail -n 1
+)"
+
+# link
+mapfile -t LINK_PAIRS < <(
+  yq -r '
+    .[] | select(.link) | .link
+    | to_entries[]
+    | "\(.key)|\(.value // \"\")"
+  ' "$CONFIG_FILE" 2>/dev/null || true
+)
+
+# create
+mapfile -t CREATE_DIRS < <(
+  yq '.[] | select(.create) | .create[]' "$CONFIG_FILE" 2>/dev/null || true
+)
+
+# shell
+mapfile -t SHELL_PAIRS < <(
+  yq -r '
+    .[] | select(.shell) | .shell[]
+    | .[0] + "|" + .[1]
+  ' "$CONFIG_FILE" 2>/dev/null || true
+)
+
+#------------------------- Execute actions -------------------------#
+
+if ! $SHELL_ONLY; then
+  for pair in "${LINK_PAIRS[@]:-}"; do
+    dest="${pair%%|*}"
+    src="${pair#*|}"
+    link_entry "$src" "$dest" "$RELINK_DEFAULT"
+  done
+
+  for d in "${CREATE_DIRS[@]:-}"; do
+    create_dir "$d"
+  done
+fi
+
+if $RUN_SHELL; then
+  for pair in "${SHELL_PAIRS[@]:-}"; do
+    cmd="${pair%%|*}"
+    desc="${pair#*|}"
+    run_shell_cmd "$cmd" "$desc"
+  done
+fi

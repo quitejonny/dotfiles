@@ -10,7 +10,6 @@
     ~/.bashrc: bash/bashrc
     ~/.bash_profile: bash/bash_profile
     ~/.config/nvim: nvim
-    ~/.dotfiles: ""
     ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
     ~/.pandoc: pandoc
     ~/.profile: bash/profile

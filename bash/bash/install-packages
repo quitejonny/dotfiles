@@ -26,6 +26,10 @@ sudo snap connect keepassxc:password-manager-service
 sudo snap connect keepassxc:raw-usb
 sudo snap connect keepassxc:removable-media
 
-sudo apt install -y nextcloud-desktop
+sudo apt install -y \
+    nextcloud-desktop \
+    yubioath-desktop \
+    yubikey-manager-qt \
+    yubikey-personalization-gui
 
 echo "Done. Installed snaps and configured KeePassXC interfaces."

@@ -176,14 +176,14 @@ run_shell_cmd() {
 
 # defaults.link.relink (bool, default false)
 RELINK_DEFAULT="$(
-  yq '.[].defaults.link.relink // false' "$CONFIG_FILE" 2>/dev/null \
+  yq '.defaults.link.relink // false' "$CONFIG_FILE" 2>/dev/null \
   | tail -n 1
 )"
 
 # link
 mapfile -t LINK_PAIRS < <(
   yq -r '
-    .[] | select(.link) | .link
+     .link
     | to_entries[]
     | "\(.key)|\(.value // \"\")"
   ' "$CONFIG_FILE" 2>/dev/null || true
@@ -191,15 +191,12 @@ mapfile -t LINK_PAIRS < <(
 
 # create
 mapfile -t CREATE_DIRS < <(
-  yq '.[] | select(.create) | .create[]' "$CONFIG_FILE" 2>/dev/null || true
+  yq '.create[]' "$CONFIG_FILE" 2>/dev/null || true
 )
 
 # shell
 mapfile -t SHELL_PAIRS < <(
-  yq -r '
-    .[] | select(.shell) | .shell[]
-    | .[0] + "|" + .[1]
-  ' "$CONFIG_FILE" 2>/dev/null || true
+  yq -r '.shell[] | .[0] + "|" + .[1]' "$CONFIG_FILE" 2>/dev/null || true
 )
 
 #------------------------- Execute actions -------------------------#

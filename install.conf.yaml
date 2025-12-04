@@ -1,27 +1,27 @@
-- defaults:
-    link:
-      relink: true
+defaults:
+  link:
+    relink: true
 
-- clean: ['~']
+clean: ['~']
 
-- link:
-    ~/.bash: bash/bash
-    ~/.bash_aliases: bash/bash_aliases
-    ~/.bashrc: bash/bashrc
-    ~/.bash_profile: bash/bash_profile
-    ~/.config/nvim: nvim
-    ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
-    ~/.pandoc: pandoc
-    ~/.profile: bash/profile
-    ~/.tmux.conf: tmux/tmux.conf
-    ~/.vim: vim/vim
-    ~/.vimrc: vim/vimrc
-    ~/texmf: texmf
-    ~/.config/alacritty: alacritty
+link:
+  ~/.bash: bash/bash
+  ~/.bash_aliases: bash/bash_aliases
+  ~/.bashrc: bash/bashrc
+  ~/.bash_profile: bash/bash_profile
+  ~/.config/nvim: nvim
+  ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
+  ~/.pandoc: pandoc
+  ~/.profile: bash/profile
+  ~/.tmux.conf: tmux/tmux.conf
+  ~/.vim: vim/vim
+  ~/.vimrc: vim/vimrc
+  ~/texmf: texmf
+  ~/.config/alacritty: alacritty
 
-- create:
-    - ~/downloads
-    - ~/.vim/undo-history
+create:
+  - ~/downloads
+  - ~/.vim/undo-history
 
-- shell:
-  - [git submodule update --init --recursive, Installing submodules]
+shell:
+- [git submodule update --init --recursive, Installing submodules]

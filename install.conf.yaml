@@ -8,7 +8,7 @@ link:
   ~/.bash: bash/bash
   ~/.bash_aliases: bash/bash_aliases
   ~/.bashrc: bash/bashrc
-  ~/.bash_profile: bash/bash_profile
+  # ~/.bash_profile: bash/bash_profile
   ~/.config/nvim: nvim
   ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
   ~/.pandoc: pandoc

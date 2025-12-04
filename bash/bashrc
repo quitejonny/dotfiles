@@ -80,10 +80,6 @@ if [ -d ~/.bash_completions ]; then
     done
 fi
 
-for f in $(find ~/.bash/ -maxdepth 1 -type f); do
-    source $f
-done
-
 function parse_git_branch () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
@@ -96,7 +92,7 @@ NO_COLOR="\[\033[0m\]"
 
 export PS1="\${debian_chroot:+(\$debian_chroot)}$GREEN\u@\h$NO_COLOR:$BLUE\w$NO_COLOR$YELLOW\$(parse_git_branch)$RED\$git_dirty$NO_COLOR\$ "
 
-export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/go/bin:$HOME/.bash
 export VAGRANT_DEFAULT_PROVIDER=lxd
 
 export N_PREFIX=$HOME/.local

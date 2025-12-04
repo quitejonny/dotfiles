@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+REGULAR_SNAPS=(
+  "keepassxc"
+)
+
+CLASSIC_SNAPS=(
+  "zellij"
+  "alacritty"
+  "nvim"
+)
+
+echo "Installing regular snaps..."
+for pkg in "${REGULAR_SNAPS[@]}"; do
+  echo "Installing: $pkg"
+  sudo snap install "$pkg"
+done
+
+echo "Installing classic snaps..."
+for pkg in "${CLASSIC_SNAPS[@]}"; do
+  echo "Installing (classic): $pkg"
+  sudo snap install "$pkg" --classic
+done
+
+sudo snap connect keepassxc:password-manager-service
+sudo snap connect keepassxc:raw-usb
+sudo snap connect keepassxc:removable-media
+
+sudo apt install -y nextcloud-desktop
+
+echo "Done. Installed snaps and configured KeePassXC interfaces."

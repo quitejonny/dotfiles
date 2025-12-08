@@ -1,46 +1,69 @@
-vim.cmd [[packadd packer.nvim]]
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-return require('packer').startup(function()
-    use 'wbthomason/packer.nvim'
-    use {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-        config = [[require('config.treesitter')]],
-    }
-    use 'tpope/vim-fugitive'
-    use {
-        'L3MON4D3/LuaSnip',
-        config = [[require('config.luasnip')]]
-    }
-
-    use {
-        'neovim/nvim-lspconfig',
-        config = [[require('config.lspconfig')]]
-    }
-    use 'jose-elias-alvarez/nvim-lsp-ts-utils'
-    -- use {
-    --     "jose-elias-alvarez/null-ls.nvim",
-    --     config = [[require('config.null_ls')]],
-    --     requires = { "nvim-lua/plenary.nvim" }
-    -- }
-
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = { {'nvim-lua/plenary.nvim'} },
-        config = [[require('config.telescope')]]
-    }
-    use {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        run = 'make'
-    }
-    use {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter",
-        config = [[require('config.copilot')]],
-    }
-    use {
-        "stevearc/conform.nvim",
-        config = [[require('config.conform')]],
-    }
-end)
+require("lazy").setup({
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("config.treesitter")
+    end,
+  },
+  "tpope/vim-fugitive",
+  {
+    "L3MON4D3/LuaSnip",
+    config = function()
+      require("config.luasnip")
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("config.lspconfig")
+    end,
+  },
+  "jose-elias-alvarez/nvim-lsp-ts-utils",
+  -- Same as your commented-out null-ls block
+  -- {
+  --   "jose-elias-alvarez/null-ls.nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require("config.null_ls")
+  --   end,
+  -- },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("config.telescope")
+    end,
+  },
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("config.copilot")
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    config = function()
+      require("config.conform")
+    end,
+  },
+})

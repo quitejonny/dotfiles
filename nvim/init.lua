@@ -11,37 +11,41 @@ opt.tabstop = 4
 opt.expandtab = true
 opt.autoindent = true
 
-vim.api.nvim_exec(
-[[
-fun! ToggleUmlauts()
-  if !exists("g:toggleUmlauts_isEnabled")
-    let g:toggleUmlauts_isEnabled=0
-  endif
 
-  if !g:toggleUmlauts_isEnabled
-    let g:toggleUmlauts_isEnabled=1
-    imap <buffer> "a ä
-    imap <buffer> "A Ä
-    imap <buffer> "u ü
-    imap <buffer> "U Ü
-    imap <buffer> "o ö
-    imap <buffer> "O Ö
-    imap <buffer> "s ß
+local umlauts_enabled = false
+
+local function toggle_umlauts()
+  umlauts_enabled = not umlauts_enabled
+
+  local buf = 0 -- current buffer
+  local opts = { buffer = buf }
+
+  if umlauts_enabled then
+    vim.keymap.set("i", [["a]], "ä", opts)
+    vim.keymap.set("i", [["A]], "Ä", opts)
+    vim.keymap.set("i", [["u]], "ü", opts)
+    vim.keymap.set("i", [["U]], "Ü", opts)
+    vim.keymap.set("i", [["o]], "ö", opts)
+    vim.keymap.set("i", [["O]], "Ö", opts)
+    vim.keymap.set("i", [["s]], "ß", opts)
   else
-    let g:toggleUmlauts_isEnabled=0
-    iunmap <buffer> "a
-    iunmap <buffer> "A
-    iunmap <buffer> "u
-    iunmap <buffer> "U
-    iunmap <buffer> "o
-    iunmap <buffer> "O
-    iunmap <buffer> "s
-  endif
-endfun
+    vim.keymap.del("i", [["a]], { buffer = buf })
+    vim.keymap.del("i", [["A]], { buffer = buf })
+    vim.keymap.del("i", [["u]], { buffer = buf })
+    vim.keymap.del("i", [["U]], { buffer = buf })
+    vim.keymap.del("i", [["o]], { buffer = buf })
+    vim.keymap.del("i", [["O]], { buffer = buf })
+    vim.keymap.del("i", [["s]], { buffer = buf })
+  end
+end
 
-inoremap <F2> <esc>:call ToggleUmlauts()<cr>a
-]],
-true)
+vim.keymap.set("i", "<F2>", function()
+  toggle_umlauts()
+end, { desc = "Toggle umlaut insert mappings" })
 
 opt.grepprg = "rg --vimgrep --no-heading --smart-case"
-vim.api.nvim_set_keymap('n', '<leader>a', ':silent lgrep \"\\b<cword>\\b\"<CR><CR>:lopen<CR>', {});
+
+vim.keymap.set("n", "<leader>a",
+  [[:silent lgrep "\b<C-r><C-w>\b"<CR><CR>:lopen<CR>]],
+  { silent = true, desc = "Search word with lgrep and open location list" }
+)

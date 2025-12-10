@@ -30,7 +30,7 @@ vim.lsp.config("ts_ls", {
 })
 
 vim.lsp.config("elixirls", {
-  cmd = { vim.fn.expand("~/elixir-ls/language_server.sh") },
+  cmd = { os.getenv("DEVBOX_PACKAGES_DIR") .. "/bin/elixir-ls" },
   settings = {
     elixirLS = {
       fetchDeps = false,

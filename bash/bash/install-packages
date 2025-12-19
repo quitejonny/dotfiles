@@ -30,6 +30,6 @@ sudo apt install -y \
     nextcloud-desktop \
     yubioath-desktop \
     yubikey-manager-qt \
-    yubikey-personalization-gui
+    yubikey-personalization
 
 echo "Done. Installed snaps and configured KeePassXC interfaces."

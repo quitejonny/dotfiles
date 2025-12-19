@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCHEMA="org.gnome.desktop.input-sources"
+
+sources_raw=$(gsettings get "$SCHEMA" sources)
+
+if [[ "$sources_raw" == "@a(ss) []" || "$sources_raw" == "[]" ]]; then
+  echo "No keyboard sources configured; setting default to US layout."
+  gsettings set "$SCHEMA" sources "[('xkb', 'us')]"
+else
+  echo "Sources already configured: $sources_raw"
+fi
+
+OPTION="caps:escape"
+options_raw=$(gsettings get "$SCHEMA" xkb-options)
+
+if [[ "$options_raw" != *"'$OPTION'"* ]]; then
+  echo "Adding $OPTION to xkb-options."
+
+  new_options=$(python3 - <<EOF
+import ast
+val = "$options_raw"
+if val.startswith("@as "):
+    val = val[4:]
+cur = ast.literal_eval(val)
+if "$OPTION" not in cur:
+    cur.append("$OPTION")
+print(str(cur).replace('"', "'"))
+EOF
+  )
+
+  gsettings set "$SCHEMA" xkb-options "$new_options"
+else
+  echo "xkb-options already contains $OPTION: $options_raw"
+fi
+
+echo "Done. Log out and log back in for the change to fully take effect."

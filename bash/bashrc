@@ -125,3 +125,4 @@ function install-ls () {
       # @vue/language-server \
 }
 eval "$(devbox global shellenv --init-hook)"
+eval "$(pyenv init - bash)"

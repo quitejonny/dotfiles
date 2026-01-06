@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Merge sprint nach release
-premerge () {
-    git fetch && git checkout sprint/riga && git pull && git checkout release/riga && git pull
-}

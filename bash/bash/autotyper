@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# type param on keyboard
-autotyper () {
-  sleep 3 && setxkbmap de && xdotool type "$1";
-}

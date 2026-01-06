@@ -1,8 +1,0 @@
-#!/bin/bash
-
-remote-pseudo-install () {
-  for repo in "${@:2}"
-  do
-    ssh $1 ". ~/.bash/pseudo-install; pseudo-install $repo";
-  done
-}

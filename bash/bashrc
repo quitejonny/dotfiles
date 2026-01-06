@@ -70,15 +70,6 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-if [ -f ~/.bash_completion ]; then
-    . ~/.bash_completion
-fi
-
-if [ -d ~/.bash_completions ]; then
-    for completion in $(find ~/.bash_completions/ -maxdepth 1 -type f); do
-        . $completion
-    done
-fi
 
 function parse_git_branch () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -93,14 +84,11 @@ NO_COLOR="\[\033[0m\]"
 export PS1="\${debian_chroot:+(\$debian_chroot)}$GREEN\u@\h$NO_COLOR:$BLUE\w$NO_COLOR$YELLOW\$(parse_git_branch)$RED\$git_dirty$NO_COLOR\$ "
 
 export PATH=$PATH:$HOME/go/bin:$HOME/.bash
-export VAGRANT_DEFAULT_PROVIDER=lxd
 
 export N_PREFIX=$HOME/.local
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f $HOME/.fzf/key-bindings.bash ] && source $HOME/.fzf/key-bindings.bash
-_googleCloudSdkPath=/snap/google-cloud-sdk/current/completion.bash.inc
-[ -f "$_googleCloudSdkPath" ] && source "$_googleCloudSdkPath"
 
 # fzf + ag configuration
 if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
@@ -113,16 +101,5 @@ if hash fzf 2>/dev/null && hash ag 2>/dev/null; then
   '
 fi
 
-function install-ls () {
-  echo "Installing language servers (tsserver, vue, html, css, json)"
-  npm install --global \
-      eslint_d \
-      typescript-language-server \
-      typescript \
-      @vue/typescript-plugin \
-      volar
-      # vscode-langservers-extracted \
-      # @vue/language-server \
-}
 eval "$(devbox global shellenv --init-hook)"
 eval "$(pyenv init - bash)"

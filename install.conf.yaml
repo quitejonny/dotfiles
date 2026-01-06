@@ -8,15 +8,10 @@ link:
   ~/.bash: bash/bash
   ~/.bash_aliases: bash/bash_aliases
   ~/.bashrc: bash/bashrc
-  # ~/.bash_profile: bash/bash_profile
   ~/.config/nvim: nvim
-  ~/.local/bin/reveal.js: revealjs-modac/bin/reveal.js
-  ~/.pandoc: pandoc
   ~/.profile: bash/profile
-  ~/.tmux.conf: tmux/tmux.conf
   ~/.vim: vim/vim
   ~/.vimrc: vim/vimrc
-  ~/texmf: texmf
   ~/.config/alacritty: alacritty
 
 create:

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Virtualbox startet keine maschienen
-vm-reconfigure (){
-  sudo -v
-  sudo dpkg-reconfigure virtualbox-dkms
-  sudo modprobe vboxdrv
-}

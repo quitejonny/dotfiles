@@ -16,27 +16,31 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias vpn='sudo openvpn *.ovpn'
 alias gpg=gpg2
-
-# some aliases for git
-alias gitc='git commit -p'
-alias gitp='git push'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-alias wifialive='arping -I wlp4s0 10.10.10.1'
-alias createpr='gh pr create; gh pr merge --squash --auto'
-alias k='kubectl'
-complete -o default -F __start_kubectl k
 
 alias qrestic-init="restic init"
 alias qrestic-backup="restic backup $HOME/Documents/ $HOME/Music/ $HOME/Pictures/"
 alias qeditor-set="sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60"
 alias firefox-backup="tar -C $HOME -jcvf $HOME/Documents/firefox-browser-profile.tar.bz2 $HOME/snap/firefox"
 alias firefox-restore="tar -xvf $HOME/Documents/firefox-browser-profile.tar.bz2 -C $HOME"
-alias chrome-enable-schreenshare="echo 'chrome://flags/#enable-webrtc-pipewire-capturer'"
 alias ovpn-import-qwiki-config="nmcli connection import type openvpn file $HOME/Documents/vpn.modac.eu.ovpn"
-alias install-asdf="git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.0"
+qdistrobox-create() {
+    local distrobox_home="$HOME/distrobox/ubuntu-24.04-home"
+    mkdir -p "$distrobox_home"
+    distrobox create \
+        --name ubuntu-24.04 \
+        --image ubuntu:24.04 \
+        --home "$distrobox_home" \
+        --init-hooks 'echo '\''export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'\'' >> ~/.bashrc'
+}
+
+qdistrobox-remove() {
+    local distrobox_home="$HOME/distrobox/ubuntu-24.04-home"
+    rm -rf "$distrobox_home"/.*
+    rm -rf "$distrobox_home"/*
+    distrobox rm ubuntu-24.04 --force
+}

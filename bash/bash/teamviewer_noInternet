@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Restart TeamViewer Service
-teamviewer_noInternet () {
-        sudo systemctl restart teamviewerd.service
-}

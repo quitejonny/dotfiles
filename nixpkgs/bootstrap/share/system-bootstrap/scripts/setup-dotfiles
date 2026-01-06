@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+if [ ! -d "$HOME/dotfiles" ]; then
+    gh repo clone quitejonny/dotfiles "$HOME/dotfiles"
+fi
+"$HOME/dotfiles/install"

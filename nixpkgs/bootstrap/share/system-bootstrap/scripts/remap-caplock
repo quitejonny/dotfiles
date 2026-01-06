@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ -z "$(which gsettings)" ]; then
+  echo "No gsettings found. Skipping"
+  exit 0
+fi
+
 SCHEMA="org.gnome.desktop.input-sources"
 
 sources_raw=$(gsettings get "$SCHEMA" sources)

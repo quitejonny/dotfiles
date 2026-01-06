@@ -70,7 +70,7 @@ USAGE
             command_completion
             ;;
         backup )
-            restic backup "$HOME/Documents/" "$HOME/Music/" "$HOME/Pictures/"
+            restic backup "$HOME/Documents/" "$HOME/Music/" "$HOME/Pictures/" "$HOME/Nextcloud/"
             ;;
         restore-backup )
             bash "$base_path/share/system-bootstrap/backup-restore" "$@"

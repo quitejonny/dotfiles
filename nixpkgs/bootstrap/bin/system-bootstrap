@@ -17,6 +17,15 @@ complete -F _system-bootstrap-completion system-bootstrap
 ALIASES
 }
 
+backup_restore() {
+    tmp_backup_dir="$HOME/tmp_backup_dir"
+    mkdir -p "$tmp_backup_dir"
+    restic restore latest --target "$tmp_backup_dir"
+    restored_home="$(ls -d "$tmp_backup_dir"/home/*)"
+    rsync -a "$restored_home/" "$HOME/"
+    echo "Restored backup"
+}
+
 system-bootstrap() {
     local base_path="$(cd "$(dirname "$0")/.." && pwd)"
 
@@ -73,7 +82,7 @@ USAGE
             restic backup "$HOME/Documents/" "$HOME/Music/" "$HOME/Pictures/" "$HOME/Nextcloud/"
             ;;
         restore-backup )
-            bash "$base_path/share/system-bootstrap/backup-restore" "$@"
+            backup_restore
             ;;
         * )
             echo "Unknown command '$subcommand'" >&2

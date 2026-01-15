@@ -5,6 +5,8 @@ if [ ! -z "$(which snap)" ]; then
     sudo apt install snapd
 fi
 
+sudo snap install telegram-desktop
+
 echo "Installing: keepassxc"
 sudo snap install keepassxc
 sudo snap connect keepassxc:password-manager-service

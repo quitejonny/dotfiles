@@ -1,0 +1,7 @@
+(
+    rules: "",
+    model: "pc105",
+    layout: "us,us",
+    variant: ",intl",
+    options: Some(",caps:escape"),
+)

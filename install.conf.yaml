@@ -8,11 +8,10 @@ link:
   ~/.bash: bash/bash
   ~/.bash_aliases: bash/bash_aliases
   ~/.bashrc: bash/bashrc
+  ~/.config/alacritty: alacritty
+  ~/.config/cosmic: cosmic
   ~/.config/nvim: nvim
   ~/.profile: bash/profile
-  ~/.vim: vim/vim
-  ~/.vimrc: vim/vimrc
-  ~/.config/alacritty: alacritty
 
 create:
   - ~/downloads

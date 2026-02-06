@@ -142,6 +142,10 @@ link_entry() {
   fi
 
   if [[ "$relink" == "true" ]]; then
+      if [[ -d "$linkname" ]]; then
+        echo "  Removing existing directory: $linkname"
+        do_cmd rm -r "$linkname"
+      fi
     do_cmd ln -sfn "$target" "$linkname"
   else
     if [[ -e "$linkname" || -L "$linkname" ]]; then

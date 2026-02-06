@@ -8,7 +8,7 @@ _system-bootstrap-completion() {
     local prev=${COMP_WORDS[COMP_CWORD-1]}
     case ${COMP_CWORD} in
         1)
-            COMPREPLY=($(compgen -W "--help run completion backup restore-backup" -- $cur))
+            COMPREPLY=($(compgen -W "--help run install-cosmic completion backup restore-backup" -- $cur))
             ;;
     esac
 }
@@ -36,6 +36,7 @@ Usage:
 
 Available Commands:
   run             installs system packages, configures the system and links dotfiles
+  install-cosmic  installs cosmic desktop environment
   completion      prints bash completion for this command
   backup          runs restic backup
   restore-backup  restores restic backup
@@ -74,6 +75,9 @@ USAGE
     case "$subcommand" in
         run )
             bash "$base_path/share/system-bootstrap/run" "$@"
+            ;;
+        install-cosmic )
+            bash "$base_path/share/system-bootstrap/scripts/install-cosmic" "$@"
             ;;
         completion )
             command_completion

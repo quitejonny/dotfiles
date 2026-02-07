@@ -41,13 +41,14 @@ vim.lsp.config("elixirls", {
 vim.lsp.enable("eslint")
 vim.lsp.enable("ts_ls")
 vim.lsp.enable("elixirls")
+vim.lsp.enable("gopls")
 
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*.js,*.ts,*.jsx,*.tsx,*.vue",
     command = "LspEslintFixAll",
 })
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.ex,*.exs,*.eex,*.heex",
+    pattern = "*.ex,*.exs,*.eex,*.heex,*.go",
     callback = function()
         vim.lsp.buf.format({ async = false })
     end,

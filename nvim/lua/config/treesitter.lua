@@ -1,9 +1,18 @@
-require('nvim-treesitter').setup({
-  ensure_installed = { "perl", "typescript", "vue", "javascript", "html", "css", "scss", "elixir", "go" },
+local filetypes = {
+    "perl",
+    "typescript",
+    "vue",
+    "javascript",
+    "html",
+    "css",
+    "scss",
+    "elixir",
+    "go",
+}
 
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-    disable = { "perl" },
-  },
+require('nvim-treesitter').install(filetypes)
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = filetypes,
+  callback = function() vim.treesitter.start() end,
 })

@@ -67,4 +67,12 @@ require("lazy").setup({
       require("config.conform")
     end,
   },
+  {
+    "coder/claudecode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    lazy = false,
+    config = function()
+      require("config.claudecode")
+    end,
+  },
 })

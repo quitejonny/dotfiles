@@ -22,25 +22,23 @@ alias gpg=gpg2
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-alias qrestic-init="restic init"
-alias qrestic-backup="restic backup $HOME/Documents/ $HOME/Music/ $HOME/Pictures/"
 alias qeditor-set="sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60"
 alias firefox-backup="tar -C $HOME -jcvf $HOME/Documents/firefox-browser-profile.tar.bz2 $HOME/snap/firefox"
 alias firefox-restore="tar -xvf $HOME/Documents/firefox-browser-profile.tar.bz2 -C $HOME"
 alias ovpn-import-qwiki-config="nmcli connection import type openvpn file $HOME/Documents/vpn.modac.eu.ovpn"
 qdistrobox-create() {
-    local distrobox_home="$HOME/distrobox/ubuntu-24.04-home"
+    local distrobox_home="$HOME/distrobox/ubuntu-26.04-home"
     mkdir -p "$distrobox_home"
     distrobox create \
-        --name ubuntu-24.04 \
-        --image ubuntu:24.04 \
+        --name ubuntu-26.04 \
+        --image ubuntu:26.04 \
         --home "$distrobox_home" \
         --init-hooks 'echo '\''export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'\'' >> ~/.bashrc'
 }
 
 qdistrobox-remove() {
-    local distrobox_home="$HOME/distrobox/ubuntu-24.04-home"
+    local distrobox_home="$HOME/distrobox/ubuntu-26.04-home"
     rm -rf "$distrobox_home"/.*
     rm -rf "$distrobox_home"/*
-    distrobox rm ubuntu-24.04 --force
+    distrobox rm ubuntu-26.04 --force
 }

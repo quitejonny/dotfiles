@@ -83,7 +83,7 @@ USAGE
             command_completion
             ;;
         backup )
-            restic backup "$HOME/Documents/" "$HOME/Music/" "$HOME/Pictures/" "$HOME/Nextcloud/"
+            restic backup "$HOME/Documents/" "$HOME/Music/" "$HOME/Pictures/" "$HOME/Nextcloud/" "$HOME/.config/Nextcloud/nextcloud.cfg"
             ;;
         restore-backup )
             backup_restore

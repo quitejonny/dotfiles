@@ -32,6 +32,7 @@ qdistrobox-create() {
     distrobox create \
         --name ubuntu-26.04 \
         --image ubuntu:26.04 \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
         --home "$distrobox_home" \
         --init-hooks 'echo '\''export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"'\'' >> ~/.bashrc'
 }

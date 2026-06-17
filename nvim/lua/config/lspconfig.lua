@@ -29,18 +29,20 @@ vim.lsp.config("ts_ls", {
     },
 })
 
-vim.lsp.config("elixirls", {
-  settings = {
-    elixirLS = {
-      fetchDeps = false,
-      dialyzerEnabled = false,
-    },
-  },
-})
+local devbox_dir = os.getenv("DEVBOX_PACKAGES_DIR")
+local dexter_bin = devbox_dir and (devbox_dir .. "/bin/dexter")
+
+if dexter_bin and vim.uv.fs_stat(dexter_bin) then
+    vim.lsp.config("dexter", {
+        cmd = { dexter_bin, "lsp" },
+        filetypes = { "elixir", "eelixir", "heex", "surface" },
+        root_markers = { "mix.exs" },
+    })
+    vim.lsp.enable("dexter")
+end
 
 vim.lsp.enable("eslint")
 vim.lsp.enable("ts_ls")
-vim.lsp.enable("elixirls")
 vim.lsp.enable("gopls")
 
 vim.api.nvim_create_autocmd("BufWritePre", {
